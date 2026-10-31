@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Corp · Intranet Corporativa</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1',
+                            600: '#4f46e5', 700: '#4338ca', 900: '#312e81'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-up { animation: fadeUp .6s ease both; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Barra superior -->
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur-md">
+        <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
+            <div class="flex items-center gap-3">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-white shadow-lg shadow-brand-600/20">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="leading-tight">
+                    <p class="text-sm font-semibold text-slate-900">Aegis Corp</p>
+                    <p class="text-xs text-slate-500">Intranet Corporativa</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                {% if modo == "SEGURO" %}
+                <span class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
+                    <i class="fa-solid fa-lock"></i> Modo Seguro
+                </span>
+                {% elif modo == "VULNERABLE" %}
+                <span class="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 ring-1 ring-red-200">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Modo Vulnerable
+                </span>
+                {% endif %}
+                <span class="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-700 ring-1 ring-amber-200">
+                    <i class="fa-solid fa-flask"></i> Laboratorio
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl px-5 py-10 sm:py-14">
+
+        <!-- Encabezado -->
+        <section class="fade-up mb-10 text-center">
+            <span class="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-brand-700 ring-1 ring-brand-100">
+                <i class="fa-solid fa-graduation-cap"></i> Laboratorio de Hacking Web
+            </span>
+            <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                Simulación de Entorno Vulnerable
+            </h1>
+            <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-500 sm:text-base">
+                Entorno educativo controlado para el estudio práctico de <span class="font-semibold text-slate-700">Inyección SQL</span>
+                y <span class="font-semibold text-slate-700">Cross-Site Scripting (XSS)</span>. Uso exclusivamente académico.
+            </p>
+        </section>
+
+        <!-- Tarjetas -->
+        <div class="grid gap-6 lg:grid-cols-2">
+
+            <!-- 1. Login vulnerable (SQLi) -->
+            <section class="fade-up rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition hover:shadow-md">
+                <div class="mb-5 flex items-start gap-4">
+                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                        <i class="fa-solid fa-right-to-bracket text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Inicio de Sesión Corporativo</h2>
+                        <p class="mt-1 text-sm text-slate-500">Acceso a documentos y registros clasificados.</p>
+                    </div>
+                </div>
+
+                <form method="POST" class="space-y-4">
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-slate-700">Usuario</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-user pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400"></i>
+                            <input type="text" name="username" required autocomplete="off"
+                                class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100"
+                                placeholder="Ingrese su usuario">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-slate-700">Contraseña</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400"></i>
+                            <input type="password" name="password" required
+                                class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-100"
+                                placeholder="Ingrese su contraseña">
+                        </div>
+                    </div>
+                    <button type="submit" name="login_btn"
+                        class="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-600 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/20 transition hover:bg-brand-700 active:scale-[.99]">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Ingresar al Sistema
+                    </button>
+                </form>
+            </section>
+
+            <!-- 2. Muro de soporte (XSS) -->
+            <section class="fade-up rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition hover:shadow-md">
+                <div class="mb-5 flex items-start gap-4">
+                    <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-fuchsia-50 text-fuchsia-600">
+                        <i class="fa-solid fa-comment-dots text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900">Muro de Soporte Técnico</h2>
+                        <p class="mt-1 text-sm text-slate-500">Reporte o sugerencia para el equipo de sistemas.</p>
+                    </div>
+                </div>
+
+                <form method="POST" class="space-y-4">
+                    <div>
+                        <label class="mb-1.5 block text-sm font-medium text-slate-700">Reporte / Comentario</label>
+                        <textarea name="comentario" rows="3" required
+                            class="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-fuchsia-500 focus:bg-white focus:ring-4 focus:ring-fuchsia-100"
+                            placeholder="Escriba su consulta aquí..."></textarea>
+                    </div>
+                    <button type="submit" name="comentario_btn"
+                        class="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-800 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-800/20 transition hover:bg-slate-900 active:scale-[.99]">
+                        <i class="fa-solid fa-paper-plane"></i> Enviar Reporte
+                    </button>
+                </form>
+
+                <div class="mt-5">
+                    <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">Último reporte recibido</p>
+                    <div class="min-h-[56px] rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+                        {% if comentario_usuario %}
+                            {{ comentario_usuario | safe }}
+                        {% else %}
+                            <span class="text-slate-400">Aún no se han recibido reportes.</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. Buscador de empleados (SQLi · UNION) -->
+        <section class="fade-up mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-start gap-4 border-b border-slate-100 bg-slate-50/60 px-7 py-5">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                    <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">Directorio de Empleados</h2>
+                    <p class="mt-1 text-sm text-slate-500">Busque personal por nombre dentro de la intranet.</p>
+                </div>
+            </div>
+
+            <div class="p-7">
+                <form method="POST" class="flex flex-col gap-3 sm:flex-row">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-user-magnifying-glass pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-slate-400"></i>
+                        <input type="text" name="termino" value="{{ termino }}" autocomplete="off"
+                            class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
+                            placeholder="Nombre del empleado (p. ej. Ana)...">
+                    </div>
+                    <button type="submit" name="buscar_btn"
+                        class="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 active:scale-[.99]">
+                        <i class="fa-solid fa-magnifying-glass"></i> Buscar
+                    </button>
+                </form>
+
+                {% if resultados is not none %}
+                <div class="mt-5 overflow-x-auto rounded-xl border border-slate-100">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-100 bg-slate-50 text-xs uppercase tracking-wide text-slate-400">
+                                <th class="px-5 py-3 font-semibold">Nombre</th>
+                                <th class="px-5 py-3 font-semibold">Departamento</th>
+                                <th class="px-5 py-3 font-semibold">Email</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            {% for fila in resultados %}
+                            <tr class="transition hover:bg-slate-50/70">
+                                <td class="px-5 py-3 font-medium text-slate-800">{{ fila[0] }}</td>
+                                <td class="px-5 py-3 text-slate-600">{{ fila[1] }}</td>
+                                <td class="px-5 py-3 font-mono text-xs text-slate-600">{{ fila[2] }}</td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="3" class="px-5 py-4 text-center text-slate-400">Sin coincidencias.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- Glosario -->
+        <section class="fade-up mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex items-center gap-3 border-b border-slate-100 bg-slate-50/60 px-7 py-5">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <h2 class="text-base font-bold text-slate-900">Glosario Técnico</h2>
+            </div>
+            <div class="grid gap-5 p-7 sm:grid-cols-2">
+                <div class="flex gap-3">
+                    <i class="fa-solid fa-database mt-0.5 text-brand-500"></i>
+                    <p class="text-sm text-slate-600"><span class="font-semibold text-slate-800">Inyección SQL (SQLi):</span> permite interferir en las consultas de una aplicación a su base de datos, eludiendo controles de acceso o extrayendo información confidencial.</p>
+                </div>
+                <div class="flex gap-3">
+                    <i class="fa-solid fa-code mt-0.5 text-fuchsia-500"></i>
+                    <p class="text-sm text-slate-600"><span class="font-semibold text-slate-800">XSS Reflejado:</span> ocurre cuando la aplicación incluye datos no confiables en la respuesta sin sanitizar, ejecutando scripts en el navegador de la víctima.</p>
+                </div>
+                <div class="flex gap-3">
+                    <i class="fa-solid fa-shield-halved mt-0.5 text-emerald-500"></i>
+                    <p class="text-sm text-slate-600"><span class="font-semibold text-slate-800">Sentencias Preparadas:</span> separan el código SQL de los datos del usuario, neutralizando por completo las inyecciones.</p>
+                </div>
+                <div class="flex gap-3">
+                    <i class="fa-solid fa-broom mt-0.5 text-amber-500"></i>
+                    <p class="text-sm text-slate-600"><span class="font-semibold text-slate-800">Sanitización de Entradas:</span> filtra, escapa o limpia los datos ingresados antes de procesarlos o renderizarlos.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="mt-10 text-center text-xs text-slate-400">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Entorno con vulnerabilidades intencionales · Uso exclusivamente educativo y en redes controladas.
+        </footer>
+    </main>
+
+    {% if login_mensaje %}
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Acceso denegado',
+            text: {{ login_mensaje | tojson }},
+            confirmButtonColor: '#4f46e5',
+            confirmButtonText: 'Entendido'
+        });
+    </script>
+    {% endif %}
+
+    {% if comentario_usuario %}
+    <script>
+        const Toast = Swal.mixin({
+            toast: true, position: 'top-end', showConfirmButton: false,
+            timer: 2600, timerProgressBar: true
+        });
+        Toast.fire({ icon: 'success', title: 'Reporte enviado al equipo de soporte' });
+    </script>
+    {% endif %}
+</body>
+</html>
